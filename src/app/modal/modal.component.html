@@ -1,0 +1,63 @@
+<div class="modal fade" id="{{ modalId }}" tabindex="-1" attr.aria-labelledby="{{ modalId }}Label" aria-hidden="true">
+    <div class="modal-dialog padding-modal">
+        <div class="modal-content">
+            <div class="{{'modal-header '+modalHeaderColor}}">
+                <h5 class="modal-title" id="{{ modalId }} Label">{{ modalLabel }}</h5>
+                <button type="button" class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <div [ngSwitch]="mode">
+                    <div *ngSwitchCase="ModalModeEnum.CreateMode">
+                        <form id="createPlayerForm">
+                            <div class="form-row">
+                                <label for="nicknameCreateForm" class="col-form-label">Nickname:</label>
+                                <input type="text" [class]="!isValidNickname? 'form-control is-invalid':'form-control'" id="nicknameCreateForm" (input)="handleOnChangeNickname($event)">
+                                <div *ngIf="!isValidNickname" class="invalid-feedback">
+                                    This nickname is already taken. Choose another one.
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="scoreCreateForm" class="col-form-label">Score:</label>
+                                <input type="text" [class]="!isValidScore? 'form-control is-invalid':'form-control'" id="scoreCreateForm" (input)="handleOnChangeScore($event)">
+                                <div *ngIf="!isValidScore" class="invalid-feedback">
+                                    Score needs to be a number.
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngSwitchCase="ModalModeEnum.EditMode">
+                        <form id="{{'editPlayerForm_'+modalId}}">
+                            <label for="{{'scoreForm_'+modalId}}" class="col-form-label">Score:</label>
+                            <input type="text" [class]="!isValidScore? 'form-control is-invalid':'form-control'" id="{{'scoreForm_'+modalId}}" (input)="handleOnChangeScore($event)">
+                            <div *ngIf="!isValidScore" class="invalid-feedback">
+                                Score needs to be a number.
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngSwitchCase="ModalModeEnum.DeleteMode">
+                        <div class="input-group input-group-sm mb-3">
+                            {{"Are you sure want to delete player: "+player?.nickname+"?"}}
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="ModalModeEnum.EndGame">
+                        <div class="input-group input-group-sm mb-3">
+                            Are you sure want to end the game? <br> In that case, all players will be deleted!
+                        </div>
+                    </div>
+                    <div *ngSwitchDefault>
+                        <div><b>Rank:</b> {{player?.rank}}</div>
+                        <div><b>Score:</b> {{player?.score}}</div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="mode !== ModalModeEnum.ReadMode" class="modal-footer">
+                <button *ngIf="mode === ModalModeEnum.CreateMode || mode === ModalModeEnum.EditMode" type="button" class="btn btn-secondary" data-mdb-dismiss="modal" (click)="submit()" [disabled]="!submitEnabled">
+                        Submit
+                </button>
+                <button *ngIf="mode === ModalModeEnum.DeleteMode || mode === ModalModeEnum.EndGame" type="button" class="btn btn-secondary" data-mdb-dismiss="modal" (click)="submit()">
+                        Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

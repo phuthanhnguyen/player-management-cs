@@ -1,0 +1,6 @@
+{
+  "hosting": {
+    "public": "dist/player-management",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

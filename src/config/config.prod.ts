@@ -1,0 +1,1 @@
+export const config = { "playerUrl": "https://player-manangement.onrender.com/players/" }
